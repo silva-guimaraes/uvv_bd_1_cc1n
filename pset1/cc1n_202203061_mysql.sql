@@ -1,4 +1,5 @@
 
+\! echo 'criando banco de dados...';
 CREATE DATABASE uvv;
 USE uvv;
 
@@ -18,7 +19,7 @@ ALTER TABLE cargos MODIFY COLUMN cargo VARCHAR(35) COMMENT 'Nome do cargo';
 ALTER TABLE cargos MODIFY COLUMN salario_minimo DECIMAL(8, 2) COMMENT 'Salario minimo do cargo'; 
 ALTER TABLE cargos MODIFY COLUMN salario_maximo DECIMAL(8, 2) COMMENT 'Salario maximo do cargo';
 
-
+/* chave unica */
 CREATE UNIQUE INDEX cargos_idx
  ON cargos
  ( cargo );
@@ -142,8 +143,8 @@ ALTER TABLE historico_cargos MODIFY COLUMN id_cargo VARCHAR(10) COMMENT 'Cargo e
 ALTER TABLE historico_cargos MODIFY COLUMN id_departamento INTEGER COMMENT 'Departamento onde o funcionario exercia o cargo. Chave estrangeira para departamentos.';
 
 
-/* com todas as tabelas prontas nós agora podemos começar a configurar
- * as nossas relações 
+/* com todas as tabelas chaves primarias prontas nós podemos começar 
+ * a configurar as nossas relações 
  */
 
 \! echo 'adicionando foreign keys as tabelas...';
@@ -212,7 +213,7 @@ ON UPDATE NO ACTION;
  * aqui nós iniciamos inserindo as colunas de modo que todas as foreign key apontem pra
  * uma primary key */
 
-\! echo 'inserindo colunas:'; 
+\! echo 'inserindo linhas:'; 
 \! echo 'inserindo regiões...';
 
 INSERT INTO regioes (id_regiao, nome) 
@@ -429,6 +430,8 @@ INSERT INTO departamentos (id_departamento, nome, id_localizacao, id_gerente)
 VALUES (260, 'Recruiting', 1700, null);
 INSERT INTO departamentos (id_departamento, nome, id_localizacao, id_gerente) 
 VALUES (270, 'Payroll', 1700, null);
+
+\! echo 'inserindo empregados...'
 
 INSERT INTO empregados (id_empregado, nome, email, telefone, data_contratacao, id_cargo, salario,
 comissao, id_supervisor, id_departamento) VALUES
