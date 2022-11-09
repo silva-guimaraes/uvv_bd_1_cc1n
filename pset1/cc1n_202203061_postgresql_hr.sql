@@ -51,7 +51,9 @@ CREATE UNIQUE INDEX cargos_idx
  ( cargo );
 
 CREATE TABLE hr.regioes (
-                id_regiao INTEGER NOT NULL,
+		/* SERIAL automaticamente escolhe um numero para ser a chave primaria 
+		 * de uma nova inserção */
+                id_regiao SERIAL NOT NULL,
                 nome VARCHAR(25) NOT NULL,
                 CONSTRAINT id_regiao PRIMARY KEY (id_regiao)
 );
@@ -81,7 +83,7 @@ CREATE UNIQUE INDEX paises_idx
  ( nome );
 
 CREATE TABLE hr.localizacoes (
-                id_localizacao INTEGER NOT NULL,
+                id_localizacao SERIAL NOT NULL,
                 endereco VARCHAR(50),
                 uf VARCHAR(25),
                 cidade VARCHAR(50),
@@ -100,7 +102,7 @@ COMMENT ON COLUMN hr.localizacoes.id_pais IS 'Chave estrangeira referênciando 
 
 \! echo 'criando tabela departamentos...';
 CREATE TABLE hr.departamentos (
-                id_departamento INTEGER NOT NULL,
+                id_departamento SERIAL NOT NULL,
                 nome VARCHAR(50),
                 id_localizacao INTEGER,
                 id_gerente INTEGER,
@@ -113,12 +115,13 @@ COMMENT ON COLUMN hr.departamentos.id_localizacao IS 'Chave estrangeira referê
 COMMENT ON COLUMN hr.departamentos.id_gerente IS 'Empregado encarregado do departamento. Chave estrangeira para empregados';
 
 
+
 CREATE UNIQUE INDEX departamentos_idx
  ON hr.departamentos
  ( nome );
 
 CREATE TABLE hr.empregados (
-                id_empregado INTEGER NOT NULL,
+                id_empregado SERIAL NOT NULL,
                 nome VARCHAR(75) NOT NULL,
                 email VARCHAR(35) NOT NULL,
                 telefone VARCHAR(20),
@@ -128,7 +131,10 @@ CREATE TABLE hr.empregados (
                 comissao NUMERIC(4,2),
                 id_departamento INTEGER,
                 id_supervisor INTEGER,
-                CONSTRAINT id_empregado PRIMARY KEY (id_empregado)
+                CONSTRAINT id_empregado PRIMARY KEY (id_empregado),
+		/* adicionando uma constraint */
+		/* salario não pode ser nem zero nem nenhum numero negativo */
+		CHECK (salario > 0)
 );
 COMMENT ON TABLE hr.empregados IS 'Representa empregados. Supervisores e gerentes inclusos.';
 COMMENT ON COLUMN hr.empregados.id_empregado IS 'Chave primária';
@@ -142,7 +148,6 @@ COMMENT ON COLUMN hr.empregados.comissao IS 'Porcentagem de comissão do empreg
 COMMENT ON COLUMN hr.empregados.id_departamento IS 'Departamento do empregado. Chave estrangeira para departamentos.';
 COMMENT ON COLUMN hr.empregados.id_supervisor IS 'Supervisor do empregado. auto-relação devido ao fato do supervisor também ser um empregado.';
 
-
 CREATE UNIQUE INDEX empregados_idx
  ON hr.empregados
  ( email );
@@ -153,7 +158,9 @@ CREATE TABLE hr.historico_cargos (
                 data_final DATE NOT NULL,
                 id_cargo VARCHAR(10) NOT NULL,
                 id_departamento INTEGER,
-                CONSTRAINT historico_pk PRIMARY KEY (id_empregado, data_inicial)
+                CONSTRAINT historico_pk PRIMARY KEY (id_empregado, data_inicial),
+		/* data_inicial sempre precede data_final */
+		CHECK (data_final > data_inicial)
 );
 COMMENT ON TABLE hr.historico_cargos IS 'Armazena todos os cargos passado de cada empregado. Essa tabela não armazena os cargos atuais de cada empregado. procure pelos cargos de cada empregado na tabela empregados';
 COMMENT ON COLUMN hr.historico_cargos.id_empregado IS 'Chave primária';
@@ -161,7 +168,6 @@ COMMENT ON COLUMN hr.historico_cargos.data_inicial IS 'Data inicial do empregado
 COMMENT ON COLUMN hr.historico_cargos.data_final IS 'Data do fim do empragado naquele cargo';
 COMMENT ON COLUMN hr.historico_cargos.id_cargo IS 'Cargo em que o funcionario foi empregado. Chave estrangeira para cargos.';
 COMMENT ON COLUMN hr.historico_cargos.id_departamento IS 'Departamento onde o funcionario exercia o cargo. Chave estrangeira para departamentos.';
-
 
 ALTER TABLE hr.empregados ADD CONSTRAINT cargos_empregados_fk
 FOREIGN KEY (id_cargo)
@@ -233,9 +239,6 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-\! echo 'inserindo linhas:'; 
-\! echo 'inserindo regiões...';
-
 INSERT INTO hr.regioes (id_regiao, nome) 
 VALUES (1, 'Europe');
 INSERT INTO hr.regioes (id_regiao, nome) 
@@ -244,8 +247,6 @@ INSERT INTO hr.regioes (id_regiao, nome)
 VALUES (3, 'Asia');
 INSERT INTO hr.regioes (id_regiao, nome) 
 VALUES (4, 'Middle East and Africa');
-
-\! echo 'inserindo países...';
 
 INSERT INTO hr.paises (id_pais, id_regiao, nome) 
 VALUES ('AR', 2, 'Argentina');
@@ -298,8 +299,6 @@ VALUES ('ZM', 4, 'Zambia');
 INSERT INTO hr.paises (id_pais, id_regiao, nome) 
 VALUES ('ZW', 4, 'Zimbabwe');
 
-\! echo 'inserindo localizações...';
-
 INSERT INTO hr.localizacoes (id_localizacao, endereco, cep, cidade, uf, id_pais) 
 VALUES (1000, '1297 Via Cola di Rie', '00989', 'Roma', null, 'IT');
 INSERT INTO hr.localizacoes (id_localizacao, endereco, cep, cidade, uf, id_pais) 
@@ -347,8 +346,6 @@ VALUES (3100, 'Pieter Breughelstraat 837', '3029SK', 'Utrecht', 'Utrecht', 'NL')
 INSERT INTO hr.localizacoes (id_localizacao, endereco, cep, cidade, uf, id_pais) 
 VALUES (3200, 'Mariano Escobedo 9991', '11932', 'Mexico City', 'Distrito Federal,', 'MX');
 
-\! echo 'inserindo cargos...';
-
 INSERT INTO hr.cargos (id_cargo, cargo, salario_minimo, salario_maximo) 
 VALUES ('AD_PRES', 'President', 20080, 40000);
 INSERT INTO hr.cargos (id_cargo, cargo, salario_minimo, salario_maximo) 
@@ -387,8 +384,6 @@ INSERT INTO hr.cargos (id_cargo, cargo, salario_minimo, salario_maximo)
 VALUES ('HR_REP', 'Human Resources Representative', 4000, 9000);
 INSERT INTO hr.cargos (id_cargo, cargo, salario_minimo, salario_maximo) 
 VALUES ('PR_REP', 'Public Relations Representative', 4500, 10500);
-
-\! echo 'inserindo departamentos...'
 
 /* alguns departamentos dependem de um gerente para serem inseridos.
  * primeiro iremos inserir os departamentos sem especificar nenhum gerente
@@ -450,8 +445,6 @@ INSERT INTO hr.departamentos (id_departamento, nome, id_localizacao, id_gerente)
 VALUES (260, 'Recruiting', 1700, null);
 INSERT INTO hr.departamentos (id_departamento, nome, id_localizacao, id_gerente) 
 VALUES (270, 'Payroll', 1700, null);
-
-\! echo 'inserindo empregados...'
 
 INSERT INTO hr.empregados (id_empregado, nome, email, telefone, data_contratacao, id_cargo, salario,
 comissao, id_supervisor, id_departamento) VALUES
@@ -874,8 +867,6 @@ comissao, id_supervisor, id_departamento) VALUES
 
 /* configurando gerentes dos departamentos */
 
-\! echo 'atualizando gerentes...'
-
 UPDATE hr.departamentos set id_gerente = 200 where id_departamento = 10;
 UPDATE hr.departamentos set id_gerente = 201 where id_departamento = 20;
 UPDATE hr.departamentos set id_gerente = 114 where id_departamento = 30;
@@ -887,8 +878,6 @@ UPDATE hr.departamentos set id_gerente = 145 where id_departamento = 80;
 UPDATE hr.departamentos set id_gerente = 100 where id_departamento = 90;
 UPDATE hr.departamentos set id_gerente = 108 where id_departamento = 100;
 UPDATE hr.departamentos set id_gerente = 205 where id_departamento = 110;
-
-\! echo 'inserindo histórico de cargos...'
 
 /* histórico de cargos depende de departamentos, cargos e empregados é obrigado a vir por ultimo 
  */
