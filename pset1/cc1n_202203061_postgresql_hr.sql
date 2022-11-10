@@ -30,22 +30,28 @@ GRANT ALL ON SCHEMA hr TO foo;
 /* fazer o esquema hr o esquema padrão */
 ALTER USER foo SET search_path to hr, "$user", public;
 
+/* criar tabela */
 CREATE TABLE hr.cargos (
                 id_cargo VARCHAR(10) NOT NULL,
                 cargo VARCHAR(35) NOT NULL,
                 salario_minimo NUMERIC(8,2),
                 salario_maximo NUMERIC(8,2),
-                CONSTRAINT cargos_pk PRIMARY KEY (id_cargo)
+                CONSTRAINT cargos_pk PRIMARY KEY (id_cargo),
+		/* salario minimo sempre precede o salario maximo */
+		CHECK (salario_maximo > salario_minimo),
+		/* salario não pode ser nem zero nem nenhum numero negativo */
+		CHECK (salario_minimo > 0)
 );
 /* esses são os comentarios das tabelas e colunas que podem ser acessados usando o comando 
  * \dt+ para as tabelas e \d+ para as colunas no psql */
-COMMENT ON TABLE hr.cargos IS 'Listagem todos os cargos existentes';
+COMMENT ON TABLE hr.cargos IS 'Listagem de todos os cargos existentes';
 COMMENT ON COLUMN hr.cargos.id_cargo IS 'Chave primária';
 COMMENT ON COLUMN hr.cargos.cargo IS 'Nome do cargo';
 COMMENT ON COLUMN hr.cargos.salario_minimo IS 'Salario minimo do cargo';
 COMMENT ON COLUMN hr.cargos.salario_maximo IS 'Salario maximo do cargo';
 
 
+/* marcar coluna como unique key */
 CREATE UNIQUE INDEX cargos_idx
  ON hr.cargos
  ( cargo );
@@ -162,12 +168,14 @@ CREATE TABLE hr.historico_cargos (
 		/* data_inicial sempre precede data_final */
 		CHECK (data_final > data_inicial)
 );
-COMMENT ON TABLE hr.historico_cargos IS 'Armazena todos os cargos passado de cada empregado. Essa tabela não armazena os cargos atuais de cada empregado. procure pelos cargos de cada empregado na tabela empregados';
+COMMENT ON TABLE hr.historico_cargos IS 'Armazena todos os cargos passados de cada empregado. Essa tabela não armazena os cargos atuais de cada empregado. procure pelos cargos de cada empregado na tabela empregados';
 COMMENT ON COLUMN hr.historico_cargos.id_empregado IS 'Chave primária';
 COMMENT ON COLUMN hr.historico_cargos.data_inicial IS 'Data inicial do empregado naquele certo cargo';
 COMMENT ON COLUMN hr.historico_cargos.data_final IS 'Data do fim do empragado naquele cargo';
 COMMENT ON COLUMN hr.historico_cargos.id_cargo IS 'Cargo em que o funcionario foi empregado. Chave estrangeira para cargos.';
 COMMENT ON COLUMN hr.historico_cargos.id_departamento IS 'Departamento onde o funcionario exercia o cargo. Chave estrangeira para departamentos.';
+
+/* com todas as tabelas e chaves primarias prontas nós podemos começar  a configurar as relações */
 
 ALTER TABLE hr.empregados ADD CONSTRAINT cargos_empregados_fk
 FOREIGN KEY (id_cargo)
@@ -846,8 +854,7 @@ telefone, data_contratacao, id_cargo, salario,
 comissao, id_supervisor, id_departamento) VALUES
 (199, 'Douglas Grant', 'DGRANT', '650.507.9844', '2008-01-13', 'SH_CLERK', 2600, null, 124, 50); 
 
-/* alguns dos empregados que não foram incluidos na seleção */
-
+/* alguns dos empregados que não foram incluidos na seleção */ 
 INSERT INTO hr.empregados (id_empregado, nome, email, telefone, data_contratacao, id_cargo, salario,
 comissao, id_supervisor, id_departamento) VALUES
 (200, 'Jennifer Whalen', 'JWHALEN', '515.123.4444', '2003-09-17', 'AD_ASST', 4400, null, 101, 10);
@@ -864,9 +871,7 @@ INSERT INTO hr.empregados (id_empregado, nome, email, telefone, data_contratacao
 comissao, id_supervisor, id_departamento) VALUES
 (205, 'Shelley Higgins', 'SHIGGINS', '515.123.8080', '2002-06-07', 'AC_MGR', 12008, null, 101, 110);
 
-
-/* configurando gerentes dos departamentos */
-
+/* configurando gerentes dos departamentos */ 
 UPDATE hr.departamentos set id_gerente = 200 where id_departamento = 10;
 UPDATE hr.departamentos set id_gerente = 201 where id_departamento = 20;
 UPDATE hr.departamentos set id_gerente = 114 where id_departamento = 30;
@@ -878,9 +883,6 @@ UPDATE hr.departamentos set id_gerente = 145 where id_departamento = 80;
 UPDATE hr.departamentos set id_gerente = 100 where id_departamento = 90;
 UPDATE hr.departamentos set id_gerente = 108 where id_departamento = 100;
 UPDATE hr.departamentos set id_gerente = 205 where id_departamento = 110;
-
-/* histórico de cargos depende de departamentos, cargos e empregados é obrigado a vir por ultimo 
- */
 
 INSERT INTO hr.historico_cargos (id_empregado, data_inicial, data_final, id_cargo, id_departamento) 
 VALUES (102, '2001-01-13', '2006-07-24', 'IT_PROG', 60);
@@ -902,3 +904,6 @@ INSERT INTO hr.historico_cargos (id_empregado, data_inicial, data_final, id_carg
 VALUES (200, '2002-07-01', '2006-12-31', 'AC_ACCOUNT', 90);
 INSERT INTO hr.historico_cargos (id_empregado, data_inicial, data_final, id_cargo, id_departamento) 
 VALUES (201, '2004-02-17', '2007-12-19', 'MK_REP', 20);
+
+\! echo 'sucesso!'
+/* eof */
