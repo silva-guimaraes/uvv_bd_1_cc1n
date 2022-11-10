@@ -37,8 +37,7 @@
    <remarks>Representa países. Países ficam em regiões e países possuem localizações.</remarks>
    <folder id="FOLTAB81" populated="true" name="Columns" physicalName="Columns" type="1">
     <column id="COL9" populated="true" UUID="9db0d0da-d495-4550-80ea-3a81870eada6" autoIncrement="false" autoIncrementSequenceName="paises_id_pais_seq" defaultValue="" name="id_pais" nullable="0" physicalName="id_pais" precision="2" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
-     <remarks>Chave primária. Sigla de dois caracteres do país
-</remarks>
+     <remarks>Chave primária. Sigla de dois caracteres do país</remarks>
     </column>
     <column id="COL10" populated="true" UUID="917488ef-b70a-435d-9237-8c9131a1d778" autoIncrement="false" autoIncrementSequenceName="paises_nome_seq" defaultValue="" name="nome" nullable="0" physicalName="nome" precision="50" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks>nome do pais</remarks>
@@ -140,7 +139,7 @@
      <remarks>Data de contratação do empregado</remarks>
     </column>
     <column id="COL40" populated="true" UUID="b4f9d4b0-ec7e-4113-8384-7e31d207c12e" autoIncrement="false" autoIncrementSequenceName="empregados_id_cargo_seq" defaultValue="" name="id_cargo" nullable="0" physicalName="id_cargo" precision="10" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
-     <remarks>Cargo do empregado. Chave entrangeira. Cargos são catalogados na tabela cargos. </remarks>
+     <remarks>Cargo do empregado. Chave entrangeira. Cargos são catalogados na tabela cargos.</remarks>
     </column>
     <column id="COL41" populated="true" UUID="97b6509b-ed9a-4de0-8b01-2d1b42661710" autoIncrement="false" autoIncrementSequenceName="empregados_salario_seq" defaultValue="" name="salario" nullable="1" physicalName="salario" precision="8" referenceCount="1" scale="2" sourceDataTypeName="UserDefinedSQLType" type="3" userDefinedTypeUUID="cc1304ea-628a-4fc5-a84a-06ba14759152" >
      <remarks>Salario do funcionario</remarks>
@@ -252,8 +251,8 @@
    <relationship id="REL81" populated="true" UUID="ff16ffe1-83ee-46ae-bb62-a5286643c29c" deferrability="7" deleteRule="3" fk-table-ref="TAB49" fkCardinality="7" identifying="false" name="empregados_historico_cargos_fk" physicalName="empregados_historico_cargos_fk" pk-table-ref="TAB34" pkCardinality="2" updateRule="3" >
     <column-mapping id="CMP82" populated="true" UUID="4d570cb1-c902-4678-b8e6-de5521ecac8d" fk-column-ref="COL50" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL35" />
    </relationship>
-   <relationship id="REL83" populated="true" UUID="012b688a-994a-4001-8159-0856f983d1a8" deferrability="7" deleteRule="3" fk-table-ref="TAB34" fkCardinality="7" identifying="false" name="cargos_empregados_fk" physicalName="cargos_empregados_fk" pk-table-ref="TAB58" pkCardinality="2" updateRule="3" >
-    <column-mapping id="CMP84" populated="true" UUID="c6c0f503-4610-4498-8168-db45aae6fd45" fk-column-ref="COL40" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL59" />
+   <relationship id="REL83" populated="true" UUID="012b688a-994a-4001-8159-0856f983d1a8" deferrability="7" deleteRule="3" fk-table-ref="TAB34" fkCardinality="6" identifying="false" name="cargos_empregados_fk" physicalName="cargos_empregados_fk" pk-table-ref="TAB58" pkCardinality="2" updateRule="3" >
+    <column-mapping id="CMP84" populated="true" UUID="d6a56fc2-e7a2-4974-860a-a4e6c10d83d5" fk-column-ref="COL40" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL59" />
    </relationship>
    <relationship id="REL85" populated="true" UUID="8009be2b-164f-4f34-bb40-7650c86aab88" deferrability="7" deleteRule="3" fk-table-ref="TAB49" fkCardinality="7" identifying="false" name="cargos_historico_cargos_fk" physicalName="cargos_historico_cargos_fk" pk-table-ref="TAB58" pkCardinality="2" updateRule="3" >
     <column-mapping id="CMP86" populated="true" UUID="770b2e96-09bd-4b78-b757-6896204138fd" fk-column-ref="COL53" name="Column Mapping" physicalName="Column Mapping" pk-column-ref="COL59" />
