@@ -11,7 +11,7 @@ Informações contidas:
 
 ## Instale
 ### SGBD
-Apenas disponivel para [PostgresSQL](https://www.postgresql.org/download/) e [MariaDB/MySQL](https://mariadb.org/download/). Das duas opções, escolha um sistema de gerenciamente de sua prefêrencia, siga as instruções de como instalar o servidor clicando no link, e após todas as configurações siga para o proximo passo.
+Apenas disponivel para [PostgresSQL](https://www.postgresql.org/download/) e [MariaDB/MySQL](https://mariadb.org/download/). Das duas opções, escolha um sistema de gerenciamente de sua prefêrencia, siga as instruções de como instalar o servidor clicando em um dos links, e após todas as configurações siga para o proximo passo.
 
 ### Scripts
 Assumindo que esteja usando a versão linha de comando do git:
