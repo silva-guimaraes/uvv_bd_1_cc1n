@@ -28,7 +28,7 @@ MariaDB/Mysql:
 ```
 mysql -u root -p < cc1n_202203061_mysql.sql
 ```
-Uma mensagem ao final da execução dizendo 'sucesso!' sinaliza que a instalação foi concluida com sucessivamente.
+Uma mensagem ao final da execução dizendo 'sucesso!' sinaliza que a instalação foi concluida sucessivamente.
 
 ## Tabelas
 Todas as tabelas no PostgreSQL são criadas dentro do esquema "hr".
