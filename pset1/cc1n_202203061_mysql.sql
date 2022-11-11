@@ -1,7 +1,16 @@
 
-\! echo 'criando banco de dados...';
+/* não sei o que ocorreu exatamente mas quando eu tentei renomear este arquivo eu acabei criando uma cópia dele */
+
+\! echo 'criando usuario...'; 
+DROP USER IF EXISTS 'teste'@'localhost';
+CREATE USER 'teste'@'localhost' IDENTIFIED BY 'computacao@raiz';
+
+DROP DATABASE IF EXISTS uvv;
 CREATE DATABASE uvv;
-USE uvv;
+
+GRANT ALL ON uvv.* TO 'teste'@'localhost';
+
+USE uvv; 
 
 /* criando tabelas. começamos pelas tebelas que não precisam de foreign keys. */
 
@@ -11,6 +20,10 @@ CREATE TABLE cargos (
                 cargo VARCHAR(35) NOT NULL,
                 salario_minimo DECIMAL(8,2),
                 salario_maximo DECIMAL(8,2),
+		/* salario minimo sempre precede o salario maximo */
+		CHECK (salario_maximo > salario_minimo),
+		/* salario não pode ser nem zero nem nenhum numero negativo */
+		CHECK (salario_minimo > 0),
                 PRIMARY KEY (id_cargo)
 ); 
 ALTER TABLE cargos COMMENT 'Listagem todos os cargos existentes'; 
@@ -26,7 +39,7 @@ CREATE UNIQUE INDEX cargos_idx
 
 \! echo 'criando tabela regiões...';
 CREATE TABLE regioes (
-                id_regiao INT NOT NULL,
+                id_regiao INT NOT NULL auto_increment,
                 nome VARCHAR(25) NOT NULL,
                 PRIMARY KEY (id_regiao)
 ); 
@@ -57,7 +70,7 @@ CREATE UNIQUE INDEX paises_idx
 
 \! echo 'criando tabela localizações...';
 CREATE TABLE localizacoes (
-                id_localizacao INT NOT NULL,
+                id_localizacao INT NOT NULL auto_increment,
                 endereco VARCHAR(50),
                 uf VARCHAR(25),
                 cidade VARCHAR(50),
@@ -76,7 +89,7 @@ ALTER TABLE localizacoes MODIFY COLUMN id_pais CHAR(2) COMMENT 'Chave estrangeir
 
 \! echo 'criando tabela departamentos...';
 CREATE TABLE departamentos (
-                id_departamento INT NOT NULL,
+                id_departamento INT NOT NULL auto_increment,
                 nome VARCHAR(50),
                 id_localizacao INT,
                 id_gerente INT,
@@ -96,7 +109,7 @@ CREATE UNIQUE INDEX departamentos_idx
 \! echo 'criando tabela empregados...';
 
 CREATE TABLE empregados (
-                id_empregado INT NOT NULL,
+                id_empregado INT NOT NULL auto_increment,
                 nome VARCHAR(75) NOT NULL,
                 email VARCHAR(35) NOT NULL,
                 telefone VARCHAR(20),
@@ -105,7 +118,10 @@ CREATE TABLE empregados (
                 salario DECIMAL(8,2),
                 comissao DECIMAL(4,2),
                 id_departamento INT,
-                id_supervisor INT,
+                id_supervisor INT, 
+		/* adicionando uma constraint */
+		/* salario não pode ser nem zero nem nenhum numero negativo */
+		CHECK (salario > 0), 
                 PRIMARY KEY (id_empregado)
 ); 
 ALTER TABLE empregados COMMENT 'Representa empregados. Supervisores e gerentes inclusos.'; 
@@ -133,6 +149,8 @@ CREATE TABLE historico_cargos (
                 data_final DATE NOT NULL,
                 id_cargo VARCHAR(10) NOT NULL,
                 id_departamento INT,
+		/* data_inicial sempre precede data_final */
+		CHECK (data_final > data_inicial),
                 PRIMARY KEY (id_empregado, data_inicial)
 ); 
 ALTER TABLE historico_cargos COMMENT 'Armazena todos os cargos passado de cada empregado. Essa tabela não armazena os cargos atuais de cada empregado. procure pelos cargos de cada empregado na tabela empregados'; 
@@ -892,3 +910,5 @@ INSERT INTO historico_cargos (id_empregado, data_inicial, data_final, id_cargo, 
 VALUES (200, '2002-07-01', '2006-12-31', 'AC_ACCOUNT', 90);
 INSERT INTO historico_cargos (id_empregado, data_inicial, data_final, id_cargo, id_departamento) 
 VALUES (201, '2004-02-17', '2007-12-19', 'MK_REP', 20);
+
+\! echo 'sucesso!'
