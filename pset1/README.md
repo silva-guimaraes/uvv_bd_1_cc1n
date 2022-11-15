@@ -43,17 +43,4 @@ Todas as tabelas no PostgreSQL são criadas dentro do esquema "hr".
 | Cargos              | cargos           | Listagem de todos os cargos existentes.                                                                           |
 | Histórico de Cargos | historico_cargos | Armazena todos os cargos passados de cada empregado. Essa tabela não armazena os cargos atuais de cada empregado. |
 
-## Colunas
-### Empregados
-| Nome físico      | Tipo                 | chave                  | null? |
-|------------------|----------------------|------------------------|-------|
-| id_empregado     | INTEGER              | Primary                | N     |
-| nome             | VARCHAR(75)          | N                      | N     |
-| email            | VARCHAR(35)          | Unique                 | N     |
-| telefone         | VARCHAR(20)          | N                      | S     |
-| data_contratacao | DATE                 | N                      | N     |
-| id_cargo         | VARCHAR(10)          | Foreign(cargos)        | N     |
-| salario          | NUMERIC/DECIMAL(8,2) | N                      | S     |
-| comissao         | NUMERIC/DECIMAL(8,2) | N                      | S     |
-| id_departamento  | INTEGER              | Foreign(departamentos) | S     |
-| id_supervisor    | INTERGER             | Foreign(empregados)    | S     |
+Verifique o arquivo meu_hr.html em seu navegador para ver informações detalhadas sobre as colunas de cada tabela.

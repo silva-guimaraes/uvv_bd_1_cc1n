@@ -30,7 +30,7 @@ GRANT ALL ON SCHEMA hr TO foo;
 /* fazer o esquema hr o esquema padrão */
 ALTER USER foo SET search_path to hr, "$user", public;
 
-/* criar tabela */
+/* criando tabelas. começamos pelas tebelas que não precisam de foreign keys. */
 CREATE TABLE hr.cargos (
                 id_cargo VARCHAR(10) NOT NULL,
                 cargo VARCHAR(35) NOT NULL,
@@ -246,6 +246,10 @@ REFERENCES hr.empregados (id_empregado)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
+
+/* do mesmo modo que nós começamos a criar tabelas pelas tabelas sem foreign key,
+ * aqui nós iniciamos inserindo as colunas de modo que todas as foreign key apontem pra
+ * uma primary key */
 
 INSERT INTO hr.regioes (id_regiao, nome) 
 VALUES (1, 'Europe');

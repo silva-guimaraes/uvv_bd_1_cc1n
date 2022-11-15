@@ -1,15 +1,21 @@
 
-/* cc1n_202203061_mysql.sql */
+/* não sei o que ocorreu exatamente mas quando eu tentei renomear este arquivo eu acabei criando uma cópia dele */
 
 \! echo 'criando usuario...'; 
+/* esses comandos nessas primeiras declarações servem para suprimir erros de 
+ * existencia de algum objeto do banco de dados */
 DROP USER IF EXISTS 'teste'@'localhost';
+/* criar usuário */
 CREATE USER 'teste'@'localhost' IDENTIFIED BY 'computacao@raiz';
 
 DROP DATABASE IF EXISTS uvv;
+/*criar banco de dados */
 CREATE DATABASE uvv;
 
+/* dar permissões do banco de dados ao usuario */
 GRANT ALL ON uvv.* TO 'teste'@'localhost';
 
+/* selecionar o nosso banco de dados. todas as alterações a seguir seram feitas nele */
 USE uvv; 
 
 /* criando tabelas. começamos pelas tebelas que não precisam de foreign keys. */
