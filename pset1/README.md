@@ -1,5 +1,6 @@
 # PSET 1
-### Banco de dados de um modelo de empresa feito para recursos humanos e gestão de pessoas.
+## Banco de dados para Recursos Humanos
+<img src="meu_hr.jpg" width="900">
 
 Informações contidas:
 - empregados
