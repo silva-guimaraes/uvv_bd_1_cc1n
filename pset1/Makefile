@@ -2,7 +2,7 @@
 clean_mysql:
 	echo 'drop database uvv;' | sudo mysql 
 test_mysql: 
-	sudo mysql < ./cc1n_202203061_mysql.sql
+	sudo mysql < ./cc1n_202203061_mysql_hr.sql
 
 clean_pg:
 	echo 'drop database uvv;' | sudo -u postgres -i psql
