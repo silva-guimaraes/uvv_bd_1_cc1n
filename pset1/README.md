@@ -2,7 +2,7 @@
 ## Banco de dados para Recursos Humanos
 <img src="meu_hr.png">
 
-Informações contidas:
+### Informações contidas:
 - empregados
 - departamentos
 - histórico de cargos
