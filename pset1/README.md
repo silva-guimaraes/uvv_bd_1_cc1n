@@ -27,7 +27,7 @@ psql -U postgres < cc1n_202203061_postgresql.sql
 ```
 MariaDB/Mysql:
 ```
-mysql -u root -p < cc1n_202203061_mysql.sql
+mysql -u root -p < cc1n_202203061_mysql_hr.sql
 ```
 Uma mensagem ao final da execução dizendo 'sucesso!' sinaliza que a instalação foi concluida sucessivamente.
 
