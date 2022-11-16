@@ -4,16 +4,16 @@
 \! echo 'criando usuario...'; 
 /* esses comandos nessas primeiras declarações servem para suprimir erros de 
  * existencia de algum objeto do banco de dados */
-DROP USER IF EXISTS 'teste'@'localhost';
+DROP USER IF EXISTS 'computacao'@'localhost';
 /* criar usuário */
-CREATE USER 'teste'@'localhost' IDENTIFIED BY 'computacao@raiz';
+CREATE USER 'computacao'@'localhost' IDENTIFIED BY 'raiz';
 
 DROP DATABASE IF EXISTS uvv;
 /*criar banco de dados */
 CREATE DATABASE uvv;
 
 /* dar permissões do banco de dados ao usuario */
-GRANT ALL ON uvv.* TO 'teste'@'localhost';
+GRANT ALL ON uvv.* TO 'computacao'@'localhost';
 
 /* selecionar o nosso banco de dados. todas as alterações a seguir seram feitas nele */
 USE uvv; 
@@ -917,4 +917,8 @@ VALUES (200, '2002-07-01', '2006-12-31', 'AC_ACCOUNT', 90);
 INSERT INTO historico_cargos (id_empregado, data_inicial, data_final, id_cargo, id_departamento) 
 VALUES (201, '2004-02-17', '2007-12-19', 'MK_REP', 20);
 
+\! echo
+\! echo 'usuario: computacao'
+\! echo 'senha: raiz'
 \! echo 'sucesso!'
+

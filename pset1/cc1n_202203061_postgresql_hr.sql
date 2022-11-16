@@ -2,14 +2,14 @@
 
 /* esses comandos nessas primeiras declarações servem para suprimir erros de 
  * existencia de algum objeto do banco de dados */
-DROP ROLE IF EXISTS foo;
+DROP ROLE IF EXISTS computacao;
 /* esse usuario será o dono do nosso banco de dados */
-CREATE USER foo with password 'raiz';
+CREATE USER computacao with password 'raiz';
 
 /* aqui criamos o banco de dados com alguns parâmetros especificos */
 DROP DATABASE IF EXISTS uvv;
 CREATE DATABASE uvv WITH  
-  OWNER foo
+  OWNER computacao
   TEMPLATE template0 
   ENCODING 'UTF8' 
   LC_COLLATE 'pt_BR.UTF-8' 
@@ -25,10 +25,10 @@ CREATE SCHEMA hr;
 /* todas as tabelas serão instanciadas dentro desse esquema */
 
 /* permissões do nosso usuario */
-GRANT ALL ON SCHEMA hr TO foo;
+GRANT ALL ON SCHEMA hr TO computacao;
 
 /* fazer o esquema hr o esquema padrão */
-ALTER USER foo SET search_path to hr, "$user", public;
+ALTER USER computacao SET search_path to hr, "$user", public;
 
 /* criando tabelas. começamos pelas tebelas que não precisam de foreign keys. */
 CREATE TABLE hr.cargos (
@@ -909,5 +909,7 @@ VALUES (200, '2002-07-01', '2006-12-31', 'AC_ACCOUNT', 90);
 INSERT INTO hr.historico_cargos (id_empregado, data_inicial, data_final, id_cargo, id_departamento) 
 VALUES (201, '2004-02-17', '2007-12-19', 'MK_REP', 20);
 
+\! echo
+\! echo 'usuario: computacao'
+\! echo 'senha: raiz'
 \! echo 'sucesso!'
-/* eof */
