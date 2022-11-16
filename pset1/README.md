@@ -1,6 +1,6 @@
 # PSET 1
 ## Banco de dados para Recursos Humanos
-<img src="meu_hr.jpg" width="900">
+<img src="meu_hr.png">
 
 Informações contidas:
 - empregados
