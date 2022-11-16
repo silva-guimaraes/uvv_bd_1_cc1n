@@ -31,6 +31,8 @@ mysql -u root -p < cc1n_202203061_mysql_hr.sql
 ```
 Uma mensagem ao final da execução dizendo 'sucesso!' sinaliza que a instalação foi concluida sucessivamente.
 
+O usuario padrão é chamado "computacao" e é identificado pela senha "raiz"
+
 ## Tabelas
 Todas as tabelas no PostgreSQL são criadas dentro do esquema "hr".
 
