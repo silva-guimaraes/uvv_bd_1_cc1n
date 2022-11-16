@@ -1,5 +1,5 @@
 # PSET 1
-Banco de dados de um modelo de empresa feito para recursos humanos e gestão de pessoas.
+### Banco de dados de um modelo de empresa feito para recursos humanos e gestão de pessoas.
 
 Informações contidas:
 - empregados
